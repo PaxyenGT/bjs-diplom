@@ -9,7 +9,6 @@ userForm.loginFormCallback = data => {
 }
 userForm.registerFormCallback = data => {
     ApiConnector.register(data, entrance => {
-        console.log(data)
         entrance.success ? location.reload() : userForm.setRegisterErrorMessage(entrance.error)
     })
 }

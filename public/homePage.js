@@ -34,25 +34,31 @@ moneyManager.addMoneyCallback = money => {
     ApiConnector.addMoney(money, balalceMoney => {
         if(balalceMoney.success) {
                 ProfileWidget.showProfile(balalceMoney.data)  
-                moneyManager.setMessage() // проблема возникла с окном вывода сообщения
-        } 
+                moneyManager.setMessage(balalceMoney.success, "Вы пополнили кошелек")
+        } else {
+            moneyManager.setMessage(balalceMoney.success, balalceMoney.error)
+        }
     })
 }
 
 moneyManager.conversionMoneyCallback = conver => {
     ApiConnector.convertMoney(conver, converMoney => {
         if(converMoney.success) {
-                ProfileWidget.showProfile(converMoney.data) 
-                moneyManager.setMessage()  // проблема возникла с окном вывода сообщения   
-        }   
+            ProfileWidget.showProfile(converMoney.data) 
+            moneyManager.setMessage(converMoney.success, "Вы успешно конвертировали валюту!")  
+        } else {
+            moneyManager.setMessage(converMoney.success, converMoney.error)     
+        }
     })
 }
 
 moneyManager.sendMoneyCallback = send => {
     ApiConnector.transferMoney(send, sendMoney => {
         if(sendMoney.success) {
-                ProfileWidget.showProfile(sendMoney.data) 
-                moneyManager.setMessage() // проблема возникла с окном вывода сообщения     
+            ProfileWidget.showProfile(sendMoney.data) 
+            moneyManager.setMessage(sendMoney.success, "Вы успешно сделали перевод!")      
+        } else {
+            moneyManager.setMessage(sendMoney.success, sendMoney.error)
         }   
     })
 }
@@ -75,8 +81,10 @@ favoritesWidget.addUserCallback = addUser => {
             favoritesWidget.clearTable(addUserFavorit.data)
             favoritesWidget.fillTable(addUserFavorit.data)
             moneyManager.updateUsersList(addUserFavorit.data) 
-            moneyManager.setMessage(addUser) // проблема возникла с окном вывода сообщения
-        }       
+            favoritesWidget.setMessage(addUserFavorit.success, "Пользователь добавлен в адресную книгу!") 
+        } else {
+            favoritesWidget.setMessage(addUserFavorit.success, addUserFavorit.error)  
+        }
     })       
 }
 
@@ -86,7 +94,9 @@ favoritesWidget.removeUserCallback = removeUser => {
             favoritesWidget.clearTable(removeUserFavorit.data)
             favoritesWidget.fillTable(removeUserFavorit.data)
             moneyManager.updateUsersList(removeUserFavorit.data) 
-            moneyManager.setMessage() // проблема возникла с окном вывода сообщения
+            favoritesWidget.setMessage(removeUserFavorit.success, "Пользователь удален из адресной книги!") 
+        } else {
+            favoritesWidget.setMessage(removeUserFavorit.success, removeUserFavorit.error)  
         }
     })
 }
